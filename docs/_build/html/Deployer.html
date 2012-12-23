@@ -1,0 +1,241 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tomcat Web应用部署 &mdash; Tomcat 7.0 User Guide  documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="top" title="Tomcat 7.0 User Guide  documentation" href="index.html" />
+    <link rel="prev" title="Tomcat User Guide" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="总目录"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="index.html" title="Tomcat User Guide"
+             accesskey="P">上一页</a> |</li>
+        <li><a href="index.html">Tomcat 7.0 User Guide  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tomcat-web">
+<h1><a class="toc-backref" href="#id3">Tomcat Web应用部署</a><a class="headerlink" href="#tomcat-web" title="永久链接至标题">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#tomcat-web" id="id3">Tomcat Web应用部署</a><ul>
+<li><a class="reference internal" href="#id1" id="id4">简介</a></li>
+<li><a class="reference internal" href="#id2" id="id5">安装</a></li>
+<li><a class="reference internal" href="#context" id="id6">一句话描述Context</a></li>
+<li><a class="reference internal" href="#tomcat" id="id7">在Tomcat启动时部署</a></li>
+<li><a class="reference internal" href="#tomcat-server" id="id8">在运行中的Tomcat server进行部署</a></li>
+<li><a class="reference internal" href="#tomcat-manager" id="id9">通过Tomcat Manager进行部署</a></li>
+<li><a class="reference internal" href="#client-deployer-package" id="id10">使用Client Deployer Package进行部署</a></li>
+<li><a class="reference internal" href="#comments" id="id11">Comments</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h2><a class="toc-backref" href="#id4">简介</a><a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>部署指的是在Tomcat server中安装web应用(第三方war包或者自定义的web应用)的过程.</p>
+<p>在Tomcat server中可以通过以下方式实现部署web应用.</p>
+<blockquote>
+<div><ul class="simple">
+<li>静态部署: Tomcat完成启动前应用已经安装(setup)</li>
+<li>动态部署: 通过连接Tomcat Manager web应用完成部署或者利用已经部署的web应用 (译者注：或后边的内容尚需要推敲)</li>
+</ul>
+</div></blockquote>
+<p>Tomcat Manager提供通过URL进行web应用部署的特性。也有一个叫&#8221;Client Deployer&#8221;的shell工具，它通过与Tomcat Manager交互完成部署并提供附加的特性如对打包的web应用资源(web application resource)进行编译和校验.</p>
+</div>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id5">安装</a><a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>如果静态部署方式保护署web应用的话没有前置安装需求，尽管在Tomcat Manager手册中项目描述了一些需要前置配置的配置,在使用Tomcat Manager来部署的话也没有前置安装需求. 如果想使用Tomcat Client Deployer(TCD)方式进行部署的话，就需要先进行安装.</p>
+<p>TCD并没有包含在Tomcat core版本中，需要从下载区域进行下载，下载的文件通常标记为 <em>apache-tomcat-7.0.x-deployer</em></p>
+<p>安装TCD需要先安装Apache Ant 1.6.2+及JAVA。 操作系统中应定义下ANT_HOME(指向Ant安装目录)、JAVA_HOME(指向JAVA安装目录)环境变量. 同时也需要确保操作系统的命令行能够运行Ant的ant、Java的javac编译命令</p>
+<ol class="arabic simple">
+<li>下载TCD</li>
+<li>TDC不需要解压到已经安装的Tomcat目录, 它可以解压到其他地方</li>
+<li>阅读 <a class="reference external" href="http://tomcat.apache.org/tomcat-7.0-doc/deployer-howto.html#DeployingusingtheClientDeployerPackage">USing the Tomcat Client Deployer</a></li>
+</ol>
+</div>
+<div class="section" id="context">
+<h2><a class="toc-backref" href="#id6">一句话描述Context</a><a class="headerlink" href="#context" title="永久链接至标题">¶</a></h2>
+<p>在谈论部署web应用时，需要先理解 <em>Context</em>  这个概念. Context描述Tomcat如何调用web应用.</p>
+<p>配置Context是需要使用 <em>Context描述(descriptor)</em> . A Context Descriptor is simply an XML file that contains Tomcat related configuration for a Context, 如命名资源(naming resources)或session管理配置.
+早期的Tomcat版本中，Context描述经常包含在主配置文件 <em>server.xml</em> 中.新的版本中不建议这做(尽管依然能使用)</p>
+<p>Context描述不仅仅应用于Tomcat如何去配置Context,也常常应用于Tomcat Manager和TCD以便它们能够使用Context描述去正确执行它们的规则.</p>
+<p>本地的Context描述有:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>$CATALINA_BASE/conf/[enginename]/[hostname]/context.xml</li>
+<li>$CATALINA_BASE/webapps/[webappname]/META-INF/context.xml</li>
+</ol>
+</div></blockquote>
+<p>文件(1)中文件名为[webappname].xml，文件(2)中文件名为context.xml. 如果没有配置Context描述，Tomcat将使用它的默认值.</p>
+</div>
+<div class="section" id="tomcat">
+<h2><a class="toc-backref" href="#id7">在Tomcat启动时部署</a><a class="headerlink" href="#tomcat" title="永久链接至标题">¶</a></h2>
+<p>如果对Tomcat Manager或TCD没有兴趣，你需要在Tomcat启动时中静态部署你的应用. web应用部署在每个Host上指定的 <em>appBase</em> 里,你可以拷贝一个叫做 <em>exploded web application</em> 如未压缩的目录，或者压缩后的web应用资源 .war文件</p>
+<p>只有当Host的 <em>deployOnStartup</em> 属性为&#8221;true&#8221;时，放置在Host(默认Host为&#8221;localhost&#8221;)的 <em>appBase</em> 属性(默认appBase为&#8221;${CATALINA_BASE/webapps}&#8221;)目录下的web应用会在Tomcat启动时会进行部署.</p>
+<p>Tomcat启动时部署顺序如下所示:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>含有Context描述的会优先部署</li>
+<li>没有Context描述的已Exploded web应用会被部署，如果在appBase下有关联的.WAR文件，同时.WAR文件比已经exploded web应用要新的话，会删除到exploded目录，并重新通过.WAR部署</li>
+<li>.WAR文件部署</li>
+</ol>
+</div></blockquote>
+<p>需要注意的是，对于每一个已经部署的应用，一个Context描述将会创建，除非已经存在.</p>
+</div>
+<div class="section" id="tomcat-server">
+<h2><a class="toc-backref" href="#id8">在运行中的Tomcat server进行部署</a><a class="headerlink" href="#tomcat-server" title="永久链接至标题">¶</a></h2>
+<p>在运行状态的Tomcat server，是有可能进行web应用部署的</p>
+<p>如果Host的 <em>autoDeploy</em> 属性设置的为&#8221;true&#8221;，Host将动态部署并更新应用. 例如一个新的 .WAR放在了 <em>appBase</em> 中. 为了完成这个工作，Host需要有一个默认配置的后台进程进行处理.</p>
+<p>当 <em>autoDeploy</em> 设置为&#8221;true&#8221;时，运行中的Tomcat可以进行完成如下操作:</p>
+<blockquote>
+<div><ul class="simple">
+<li>部署copy到 <em>appBase</em> 下的.WAR文件</li>
+<li>部署copy到 <em>appBase</em> 目录下的已经exploded web应用</li>
+<li>对于通过.WAR已经部署的web应用，当新的.WAR文件提供过来后会重新进行部署. 对于已经exploded的web应用将会被删除掉，然后.WAR将会重新解压. 注意当Host的 <em>unpackWARs</em> 设置为 <em>false</em> (.WAR包不会自动exploded)时并不会这样做，而是简单的重新部署下压缩包</li>
+<li>当 <strong>/WEB-INF/web.xml</strong> (or any other resource defined as a WatchedResource)被更新时，web应用会重新加载.</li>
+<li>当之前已经部署的web应用中的Context描述文件更新时，会重新部署web应用.</li>
+<li>当之前定义的全局或单Host的Context描述文件更新时，会重新部署web应用</li>
+<li>当Context描述文件添加到 $CATALINA_BASE/conf/[enginename]/[hostname]/目录后，会重新部署web应用</li>
+<li>当document base(docBase)被删除时，应用会undeployment。 Note that on Windows, this assumes that anti-locking features (see Context configuration) are enabled, otherwise it is not possible to delete the resources of a running web application.</li>
+</ul>
+</div></blockquote>
+<p>Note that web application reloading can also be configured in the loader, in which case loaded classes will be tracked for changes.</p>
+</div>
+<div class="section" id="tomcat-manager">
+<h2><a class="toc-backref" href="#id9">通过Tomcat Manager进行部署</a><a class="headerlink" href="#tomcat-manager" title="永久链接至标题">¶</a></h2>
+<p>如果使用Tomcat Manager进行部署，请访问 <a class="reference external" href="http://tomcat.apache.org/tomcat-7.0-doc/manager-howto.html">http://tomcat.apache.org/tomcat-7.0-doc/manager-howto.html</a></p>
+</div>
+<div class="section" id="client-deployer-package">
+<h2><a class="toc-backref" href="#id10">使用Client Deployer Package进行部署</a><a class="headerlink" href="#client-deployer-package" title="永久链接至标题">¶</a></h2>
+<p>最终，可以使用Tomcat Client Deployer进行web应用部署. 该工具常用于验证、编译、压缩成.WAR、在生产环境或开发Tomcat环境进行web应用部署. 需要注意的是它需要使用Tomcat Manager，并且确保目标Tomcat服务处于运行中</p>
+<p>It is assumed the user will be familiar with Apache Ant for using the TCD. Apache Ant is a scripted build tool. The TCD comes pre-packaged with a build script to use. Only a modest understanding of Apache Ant is required (installation as listed earlier in this page, and familiarity with using the operating system command shell and configuring environment variables).</p>
+<p>The TCD includes Ant tasks, the Jasper page compiler for JSP compilation before deployment, as well as a task which validates the web application Context Descriptor. The validator task (class org.apache.catalina.ant.ValidatorTask) allows only one parameter: the base path of an exploded web application.</p>
+<p>The TCD uses an exploded web application as input (see the list of the properties used below). A web application that is programmatically deployed with the deployer may include a Context Descriptor in /META-INF/context.xml.</p>
+<p>The TCD includes a ready-to-use Ant script, with the following targets:</p>
+<blockquote>
+<div><ul class="simple">
+<li>compile (default): Compile and validate the web application. This can be used standalone, and does not need a running Tomcat server. The compiled application will only run on the associated Tomcat 7.0.x server release, and is not guaranteed to work on another Tomcat release, as the code generated by Jasper depends on its runtime component. It should also be noted that this target will also compile automatically any Java source file located in the /WEB-INF/classes folder of the web application.</li>
+<li>deploy: Deploy a web application (compiled or not) to a Tomcat server.</li>
+<li>undeploy: Undeploy a web application</li>
+<li>start: Start web application</li>
+<li>reload: Reload web application</li>
+<li>stop: Stop web application</li>
+</ul>
+</div></blockquote>
+<p>In order for the deployment to be configured, create a file called deployer.properties in the TCD installation directory root. In this file, add the following name=value pairs per line:</p>
+<p>Additionally, you will need to ensure that a user has been setup for the target Tomcat Manager (which TCD uses) otherwise the TCD will not authenticate with the Tomcat Manager and the deployment will fail. To do this, see the Tomcat Manager page.</p>
+<blockquote>
+<div><ul class="simple">
+<li>build: The build folder used will be, by default, ${build}/webapp/${path}. After the end of the execution of the compile target, the web application .WAR will be located at ${build}/webapp/${path}.war.</li>
+<li>webapp: The directory containing the exploded web application which will be compiled and validated. By default, the folder is myapp.</li>
+<li>path: Deployed context path of the web application, by default /myapp.</li>
+<li>url: Absolute URL to the Tomcat Manager web application of a running Tomcat server, which will be used to deploy and undeploy the web application. By default, the deployer will attempt to access a Tomcat instance running on localhost, at <a class="reference external" href="http://localhost:8080/manager/text">http://localhost:8080/manager/text</a>.</li>
+<li>username: Tomcat Manager username (user should have a role of manager-script)</li>
+<li>password: Tomcat Manager password.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="comments">
+<h2><a class="toc-backref" href="#id11">Comments</a><a class="headerlink" href="#comments" title="永久链接至标题">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Tomcat Web应用部署</a><ul>
+<li><a class="reference internal" href="#id1">简介</a></li>
+<li><a class="reference internal" href="#id2">安装</a></li>
+<li><a class="reference internal" href="#context">一句话描述Context</a></li>
+<li><a class="reference internal" href="#tomcat">在Tomcat启动时部署</a></li>
+<li><a class="reference internal" href="#tomcat-server">在运行中的Tomcat server进行部署</a></li>
+<li><a class="reference internal" href="#tomcat-manager">通过Tomcat Manager进行部署</a></li>
+<li><a class="reference internal" href="#client-deployer-package">使用Client Deployer Package进行部署</a></li>
+<li><a class="reference internal" href="#comments">Comments</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>上一个主题</h4>
+  <p class="topless"><a href="index.html"
+                        title="上一章">Tomcat User Guide</a></p>
+  <h3>本页</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/Deployer.txt"
+           rel="nofollow">显示源代码</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="搜索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    输入相关的模块，术语，类或者函数名称进行搜索
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>导航</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="总目录"
+             >索引</a></li>
+        <li class="right" >
+          <a href="index.html" title="Tomcat User Guide"
+             >上一页</a> |</li>
+        <li><a href="index.html">Tomcat 7.0 User Guide  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; 版权所有 2012, pengyao.
+      使用 <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
