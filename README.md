@@ -1,7 +1,7 @@
 tomcat-7.0
 ==============
 
-最近在学习Tomcat，分享一些资料出来
+最近在学习Tomcat，分享一些资料出来 
 
 init.d/     存放tomcat维护脚本(For RHEL/CentOS/SUSE)
 
